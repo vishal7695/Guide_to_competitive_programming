@@ -1,0 +1,5 @@
+header file
+cstdio
+
+freopen("in.txt","r",stdin);//redirects standard input
+freopen("out.txt","w",stdout);//redirects standard output

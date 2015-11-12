@@ -1,0 +1,375 @@
+STL
+
+vector
+
+iterators
+begin Return iterator to beginning (public member function )
+end Return iterator to end (public member function )
+rbegin Return reverse iterator to reverse beginning (public member function )
+rend Return reverse iterator to reverse end (public member function )
+
+
+methods
+size Return size (public member function )
+resize Change size (public member function )
+capacity Return size of allocated storage capacity (public member function )
+empty Test whether vector is empty
+
+front Access first element (public member function )
+back Access last element (public member function )
+
+push_back Add element at the end (public member function )
+pop_back Delete last element (public member function )
+insert Insert elements (public member function )
+erase Erase elements (public member function )
+swap Swap content (public member function )
+clear Clear content (public member function )
+
+
+  ERASE
+  // set some values (from 1 to 10)
+  for (int i=1; i<=10; i++) myvector.push_back(i);
+
+  // erase the 6th element
+  myvector.erase (myvector.begin()+5);
+
+  // erase the first 3 elements:
+  myvector.erase (myvector.begin(),myvector.begin()+3);
+
+  
+
+  REVERSE SORT AN ARRAY
+  sort(myvector.rbegin(),myvector.rend());
+  
+  or use this method (using compare function)
+	
+	bool compare(const int l, const int r)
+	{
+		return l>r;
+	}
+  
+  sort(a.begin(),a.end(), compare);
+  
+  INSERTING VALUES IN VECTOR
+  
+  inserting 2 elements of value 300 at index 1(means at index 1 and 2)
+  myvector.insert (myvector.begin()+1,2,300);
+
+  inserting 400 at index 3
+  myvector.insert (myvector.begin()+3,400);
+
+
+
+
+#string stl
+=>find - The position of the first character of the first match.
+	If no matches were found, the function returns string::npos.
+
+string str ("There are two needles in this haystack with needles.");
+string str2 ("needle");
+
+size_t found = str.find(str2);
+if (found!=string::npos)
+    cout << "first 'needle' found at: " << found << '\n';
+
+=> slicing in string stl is done using substr function
+
+
+=> compare
+// comparing apples with apples
+  string str1 ("green apple");
+  string str2 ("red apple");
+
+  if (str1.compare(str2) != 0)
+    cout << str1 << " is not " << str2 << '\n';
+
+  if (str1.compare(6,5,"apple") == 0)
+    cout << "still, " << str1 << " is an apple\n";
+
+  if (str2.compare(str2.size()-5,5,"apple") == 0)
+    cout << "and " << str2 << " is also an apple\n";
+
+  if (str1.compare(6,5,str2,4,5) == 0)
+    cout << "therefore, both are apples\n";
+
+
+
+
+  
+  ALGORITHM STL
+  
+  #Reverse range - Reverses the order of the elements in the range [first,last]
+  reverse(myvector.begin(),myvector.end());
+  
+  #finding a value in a container- finds returns an iterator to the element if found, else 
+  iterator to the element next to last(myvector[n])
+  int myints[] = { 10, 20, 30, 40 };
+  int i;
+
+  int *p = find(myints, myints+4, 30);
+  if (p != myints+4)
+    cout << "Element found in myints: " << *p << '\n';
+  else
+    cout << "Element not found in myints\n";
+
+  // using find with vector and iterator:
+  vector<int> myvector (myints,myints+4);
+	
+  vector<int>::iterator i = find (myvector.begin(), myvector.end(), 30);
+  if (i != myvector.end())
+    cout << "Element found in myvector: " << *i << '\n';
+  else
+    cout << "Element not found in myvector\n";
+  
+  
+  
+  PAIR STL
+  
+  pair <int,int> foo;
+  pair <int,int> bar;
+
+  foo = make_pair (10,20);
+  bar = make_pair (10.5,'A'); // ok: implicit conversion from pair<double,char>
+
+  cout << "foo: " << foo.first << ", " << foo.second << '\n';
+  cout << "bar: " << bar.first << ", " << bar.second << '\n';
+
+  
+  pair<string, pair<int,int> > P; 
+	 string s = P.first; // extract string 
+	 int x = P.second.first; // extract first int 
+	 int y = P.second.second; // extract second int
+	 
+
+
+
+
+	 
+#SET STL
+
+Set and multiset containers sort their elements automatically according to a certain sorting criterion. The difference between 
+the two is that multisets allow duplicates, whereas sets do not.
+
+To use a set or multiset, you must include the header file <set>
+
+The elements of a set or multiset may have any type T that is assignable, copyable, and comparable according to the sorting criterion. 
+The optional second template argument defines the sorting criterion. 
+If a special sorting criterion is not passed, the default criterion less is used. 
+The function object less sorts the elements by comparing them with operator <. 
+The optional third template parameter defines the memory model. 
+The default memory model is the model allocator, which is provided by the C++ standard library.	
+
+
+set<Elem>	A set that sorts with less<> (operator <)
+set<Elem,0p>	A set that sorts with 0p
+multiset<Elem>	A multiset that sorts with less<> (operator <)
+multiset<Elem,0p>	A multiset that sorts with 0p
+
+set c1(c2)	Creates a copy of another set/multiset of the same type (all elements are copied)
+set c(beg,end)	Creates a set/multiset initialized by the elements of the range [beg,end)
+set c(beg,end, op)	Creates a set/multiset with the sorting criterion op initialized by the elements of the range [beg,end)
+
+
+
+  set<int> myset;
+  set<int>::iterator it;
+
+  // set some initial values:
+  for (int i=1; i<=5; ++i)
+    myset.insert(i*10);    // set: 10 20 30 40 50
+
+  myset.insert(20);               // no new element inserted
+  myset.insert (25);                 // max efficiency inserting
+  myset.insert (24);                 // max efficiency inserting
+  myset.insert (26);                 // no max efficiency inserting
+
+  int myints[]= {5,10,15};              // 10 already in set, not inserted
+  myset.insert (myints,myints+3);
+
+  //there is no way to traverse a vector other than set
+  cout << "myset contains: ";
+  for (it=myset.begin(); it!=myset.end(); ++it)
+    cout << ' ' << *it;
+  cout << '\n';
+
+  //Searches the container for an element equivalent to val and returns an iterator to it if found,
+  //otherwise it returns an iterator to end
+    it=myset.find(22);
+
+    if(it!=myset.end())
+        myset.erase (it);
+
+  cout << "myset contains:";
+  for (it=myset.begin(); it!=myset.end(); ++it)
+    cout << ' ' << *it;
+  
+  
+  //Removes all elements from the set container (which are destroyed), leaving the container with a size of 0.
+    myset.clear();
+
+
+#MULTISET STL
+
+struct A
+{
+  int x;
+};
+
+struct compare
+{
+  bool operator()(const A& lhs, const A& rhs) {
+    return lhs.x < rhs.x;
+  }
+};
+
+
+int main()
+{
+  multiset<A, B> m;
+  A a1, a2;
+  a1.x = 23;
+  a2.x = 100;
+  m.insert(a1);
+  m.insert(a2);
+}
+
+
+
+
+	
+##HASH TABLES - MAP
+To find element 50 of an array named "employees" you have to access it like this:
+
+employees[50];
+In a keyed array, however, you would be able to associate each element with a "key," which can be anything 
+from a name to a product model number. So, if you have a keyed array of employee records, you could access 
+the record of employee "John Brown" like this:
+
+employees["Brown John"];
+One basic form of a keyed array is called the hash table. In a hash table, a key is used to find an element 
+instead of an index number. Since the hash table has to be coded using an indexed array, there has to be some 
+way of transforming a key to an index number. That way is called the hashing function.
+
+#STL map class, which conceptually you can think of as an "associative array" -- key names are associated 
+with particular values (e.g., you might use a student name as a key, and the student's grade as the data)
+
+map <string, char> grade_list;
+
+insertion without any function
+grade_list["John"] = 'B';
+
+modification
+grade_list["John"] = 'A';
+
+grade_list.erase("John");
+
+cout<<"The class is size "<<grade_list.size()<<endl;
+bool empty() empty returns true if the map is empty; it returns false otherwise. 
+
+If you want guarantee that the map is empty, you can use the clear function. For instance:
+grade_list.clear();
+would remove all students from the grade_list. 
+
+finding an element 
+
+if(grade_list.find("Tim") == grade_list.end())
+{
+	cout<<"Tim is not in the map!"<<endl;
+}
+
+
+// show content:
+for (map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+	cout << it->first << " => " << it->second << '\n';
+
+
+//PRIORITY QUEUE
+
+		FOR INTEGERS
+		
+		struct compare
+		{
+			bool operator() (const int l, const int r)
+			{
+				//max heap
+				return l<r;
+
+				//l>r for min heap
+			}
+		};
+
+		 int main()
+		 {
+			 priority_queue<int,vector<int>, compare > pq;
+
+			for(int i=0;i<10;i++)
+				pq.push(i);
+
+			 while ( !pq.empty() )
+			 {
+				 cout << pq.top() << endl;
+				 pq.pop();
+			 }
+
+			 return 0;
+		 }
+
+		 
+		 FOR USER DEFINED OBJECTS
+		 
+		 struct myclass
+		 {
+
+		   string str;
+		   int value;  //this is the key of priority queue
+		   char symbol;
+
+		 };
+
+
+		 struct mycompare
+		 {
+		  bool operator() (myclass *l, myclass *r) const
+		  {
+			  //implement the comparison function
+
+			  // for min heap l->value > r->value
+			  return l->value > r->value;
+
+			  // for max heap l->value < r->value
+
+		  }
+		 };
+
+
+		 int main()
+		 {
+
+			 priority_queue<myclass*,vector<myclass*>, mycompare > pq;
+
+			myclass* element[5];
+
+			for(int i=0;i<5;i++)
+			{
+				element[i]=new myclass;
+				fflush(stdin);
+
+				cout<<endl<<"enter the values<name,value,symbol> for element "<<i<<endl;
+				getline(cin,element[i]->str);
+				cin>>element[i]->value;
+				cin>>element[i]->symbol;
+
+				pq.push(element[i]);
+			}
+
+				myclass* temp;
+
+			 while ( !pq.empty() )
+			 {
+				 temp=pq.top();
+				 cout<<endl<<"name  "<<temp->str<<endl<<"value  "<<temp->value<<endl<<"symbol  "<<temp->symbol<<endl;
+				 pq.pop();
+			 }
+
+			 return 0;
+		 }

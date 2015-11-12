@@ -1,0 +1,39 @@
+Tips to keep in mind while solving questions that demand an output of float/double type with a specified precision
+
+Generally double point precision (in C++ / Java) offers you 10^-9 degree of precision, in relative error. 
+Further, most competitive programming questions allow you to be "off" by a factor of atleast "1e-9 relative or absolute". 
+
+Given this, logical comparisons should always use something like the following code:
+
+Use an EPS variable.	
+
+double EPS = 1e-9;  // EPS is short for "epsilon", the funky Greek letter Mathematicians use to formally define continuity in analysis (etc.)
+
+//test for equality: DON'T use "a==b"
+abs(a-b) < EPS;    // or
+abs(a/b - 1) < EPS;   // make sure b != 0, or even anywhere near it
+
+//test for >=: Don't use "a >= b"
+a > b-EPS;
+
+//test for >: Don't use "a > b"
+a >= b+EPS;
+
+// and similar tests for < and <=
+
+
+
+The next important thing to keep in mind is:
+Whenever possible, use integers
+Suppose you needed to find which fraction was larger: a/b or c/d, where a, b, c, d are integers.
+Well, instead of comparing (double)a/b with (double)c/d, you could just as well (and better) compare (a*d) with (b*c). No precision required. 
+Simple good old 0s and 1s doing their job for you.
+
+
+Finally, here's one more nasty little bug that a lot of people tend to miss.
+Double precision can work for only atmost about 16 significant digits. (its either 16 or 15, not more).
+Imagine writing a beautiful code, one that you've proved logically. Now imagine that in the problem, the answer, although an integer, could go 
+up to values much greater than 10^9. You think, "Well, lets use a double instead!". Only here's the catch. If the answer crosses something like 
+10^16, you're almost surely going to get a wrong answer. Indeed the answer itself could be 10000000000000001, but with that stored in your 
+"double", your output would most likely be instead 10000000000000000. You finally change all your doubles to "long long" (or long in Java), and 
+voila! you've got yourself an AC!
