@@ -1,3 +1,4 @@
+//binary tree operations
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -272,45 +273,45 @@ void inorderIterative(node* &root)
    if(!root)
        return ;
    stack<node*> s;
-   node* temp=root;
+   node* nxtNode=root;
 
-   while(temp || !s.empty())
+   while(nxtNode || !s.empty())
    {
-       if(temp==NULL)
+       if(nxtNode==NULL)
        {
            //display from stack 
            cout<<s.top()->data<<" ";
            if(s.top()->right)
-               temp=s.top()->right;
+               nxtNode=s.top()->right;
 
            s.pop();
        }
 
        else
        {
-            if(temp->left)
+            if(nxtNode->left)
             {
                 //push temp to the stack and update temp
-                s.push(temp);
-                temp=temp->left;
+                s.push(nxtNode);
+                nxtNode=nxtNode->left;
             }
 
             else
             {
-                cout<<temp->data<<" ";
+                cout<<nxtNode->data<<" ";
                 if(!s.empty())
                 {
                     cout<<s.top()->data<<" ";
                     if(s.top()->right)
-                        temp=s.top()->right;
+                        nxtNode=s.top()->right;
                     else
-                        temp=NULL;
+                        nxtNode=NULL;
 
                     s.pop();
                 }
 
                 else
-                    temp=NULL; //breaking point
+                    nxtNode=NULL; //breaking point
             }
        }
    }
@@ -367,26 +368,29 @@ void deleteNode(node* &root,int x)
     }
 
     bool found=false;
-    node *temp,*deep;
+    node *temp,*parent,*child;
     queue<node*> q;
     q.push(root);
-
-    while(!q.empty())
+    
+    //search the node, and store in temp
+    while(!q.empty()&&found==false)
     {
-        deep=q.front();
+        temp=q.front();
         q.pop();
 
-        if(deep->data==x)
+        if(temp->data==x)
         {
-            temp=deep;
             found=true;
+            break;
         }
-        
-        if(deep->left)
-            q.push(deep->left);
 
-        if(deep->right)
-            q.push(deep->right);        
+        //store left and right children
+        if(temp->left)
+            q.push(temp->left);
+
+        if(temp->right)
+            q.push(temp->right);
+
     }
 
     if(found==false)
@@ -395,17 +399,59 @@ void deleteNode(node* &root,int x)
         return ;
     }
 
+    //find the deepest node
+    parent=root;
+    if(parent->right)
+    {
+        child=root->right;
+    }
+
+    else if(parent->left)
+    {
+        child=root->left;
+    }
+
+    else
+    {
+        //only single node in the tree
+        root=NULL;
+        cout<<"element deleted"<<endl;
+
+        return ;
+    }
+
+    while(child->left||child->right)
+    {
+        if(child->right)
+        {
+            parent=child;
+            child=child->right;
+        }
+
+        else
+        {
+            parent=child;
+            child=child->left;
+        }
+    }
 
     //replace the deepest node with temp, then delete deepest node
-    cout<<"temp="<<temp->data<<endl<<"deep="<<deep->data<<endl;
+    temp->data=temp->data+child->data;
+    child->data=temp->data-child->data;
+    temp->data=temp->data-child->data;
 
-    temp->data=temp->data+deep->data;
-    deep->data=temp->data-deep->data;
-    temp->data=temp->data-deep->data;
+    //now, delete the child
+    if(parent->right)
+    {
+        delete child;
+        parent->right=NULL;
+    }
 
-    levelorder(root);
-    
-    delete deep;
+    else
+    {
+        delete child;
+        parent->left=NULL;
+    }
 
     cout<<"element deleted"<<endl;
 
@@ -421,6 +467,38 @@ void deleteTree(node* &root)
     deleteTree(root->left);
     deleteTree(root->right);
     delete root; 
+}
+
+void deleteTreeIterative(node* &root)
+{
+     //deletion using post order traversal
+
+    if(root==NULL)
+        return;
+
+    stack<node*> s1;
+    node *temp;
+    
+    s1.push(root);
+    while(!s1.empty())
+    {
+        temp=s1.top();
+        s1.pop();
+        
+        if(temp->left)
+            s1.push(temp->left);
+
+        if(temp->right)
+            s1.push(temp->right);
+
+        //delete temp now
+        delete temp;
+        temp=NULL;
+
+    }
+
+    root=NULL;
+    
 }
 
 void levelWiseDisplay(node* &root)
@@ -447,7 +525,8 @@ int main()
         cout<<" 8 inorder iterative"<<endl;
         cout<<" 9 search an element"<<endl;
         cout<<" 10 delete an element"<<endl;
-        cout<<" 11 delete tree"<<endl;
+        cout<<" 11 delete tree iterative"<<endl;
+        cout<<" 12 delete tree"<<endl;
 
         cout<<" 15 exit"<<endl;
 
@@ -497,7 +576,11 @@ int main()
                    deleteNode(root,y);
                    break;
 
-            case 11:cout<<"deleting tree"<<endl;
+            case 11:cout<<"deleting tree iteratively"<<endl;
+                    deleteTreeIterative(root);
+                    break;
+
+            case 12:cout<<"deleting tree"<<endl;
                     deleteTree(root);
                     break;
 
