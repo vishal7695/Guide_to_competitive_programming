@@ -1,5 +1,5 @@
 //Binary Heap
-//min binary heap
+//max binary heap
 
 #include<bits/stdc++.h>
 using namespace std;
