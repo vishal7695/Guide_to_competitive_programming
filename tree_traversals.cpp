@@ -316,12 +316,123 @@ void inorderIterative(node* &root)
    }
 }
 
+void search(node* &root,int x)
+{
+    if(root==NULL)
+    {
+        cout<<"empty tree"<<endl;
+        return ;
+    }
+
+    queue<node*> q;
+    q.push(root);
+
+    node *temp;
+
+    bool found=false;
+    while(found==false && !q.empty())
+    {
+        temp=q.front();
+        q.pop();
+
+        if(temp->data==x)
+        {
+            cout<<"element found"<<endl;
+            found=true;
+
+            return ;
+        }
+
+        if(temp->left)
+            q.push(temp->left);
+
+        if(temp->right)
+            q.push(temp->right);
+
+    }
+
+    if(found==false)
+    {
+        cout<<"element not found"<<endl;
+    }
+}
+
+
+void deleteNode(node* &root,int x)
+{
+    if(root==NULL)
+    {
+        cout<<"empty tree"<<endl;
+        return ;
+    }
+
+    bool found=false;
+    node *temp,*deep;
+    queue<node*> q;
+    q.push(root);
+
+    while(!q.empty())
+    {
+        deep=q.front();
+        q.pop();
+
+        if(deep->data==x)
+        {
+            temp=deep;
+            found=true;
+        }
+        
+        if(deep->left)
+            q.push(deep->left);
+
+        if(deep->right)
+            q.push(deep->right);        
+    }
+
+    if(found==false)
+    {
+        cout<<"element not found"<<endl;
+        return ;
+    }
+
+
+    //replace the deepest node with temp, then delete deepest node
+    cout<<"temp="<<temp->data<<endl<<"deep="<<deep->data<<endl;
+
+    temp->data=temp->data+deep->data;
+    deep->data=temp->data-deep->data;
+    temp->data=temp->data-deep->data;
+
+    levelorder(root);
+    
+    delete deep;
+
+    cout<<"element deleted"<<endl;
+
+}
+
+void deleteTree(node* &root)
+{
+     //deletion using post order traversal
+
+    if(root==NULL)
+        return;
+
+    deleteTree(root->left);
+    deleteTree(root->right);
+    delete root; 
+}
+
+void levelWiseDisplay(node* &root)
+{
+
+}
 
 
 int main()
 {
     node* root=NULL;
-    int x;
+    int x,y;
 
     do
     {
@@ -334,6 +445,9 @@ int main()
         cout<<" 6 preorder iterative"<<endl;
         cout<<" 7 postorder iterative"<<endl;
         cout<<" 8 inorder iterative"<<endl;
+        cout<<" 9 search an element"<<endl;
+        cout<<" 10 delete an element"<<endl;
+        cout<<" 11 delete tree"<<endl;
 
         cout<<" 15 exit"<<endl;
 
@@ -372,6 +486,20 @@ int main()
             case 8:cout<<"inorder iterative traversal"<<endl;
                    inorderIterative(root);
                 break;
+
+            case 9:cout<<"enter the value of node to be searched  ";
+                   in(y);
+                   search(root,y);
+                   break;
+
+            case 10:cout<<"enter the value of node to be deleted  ";
+                   in(y);
+                   deleteNode(root,y);
+                   break;
+
+            case 11:cout<<"deleting tree"<<endl;
+                    deleteTree(root);
+                    break;
 
             case 15:cout<<"exiting..."<<endl;
                 break;
